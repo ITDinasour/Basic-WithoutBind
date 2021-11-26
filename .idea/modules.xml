@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/BasicWithoutBindDemoApplication.iml" filepath="$PROJECT_DIR$/.idea/modules/BasicWithoutBindDemoApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BasicWithoutBindDemoApplication.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BasicWithoutBindDemoApplication.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basiclibrary/BasicWithoutBindDemoApplication.basiclibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/basiclibrary/BasicWithoutBindDemoApplication.basiclibrary.iml" />
     </modules>
   </component>
 </project>
