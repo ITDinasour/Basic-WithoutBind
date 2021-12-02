@@ -13,7 +13,7 @@ import androidx.lifecycle.OnLifecycleEvent
  *    @泛型   : T-初始化init时的数据类型，VB-布局的ViewBinding类型
  *    @version: 1.0
  */
-abstract class BasicViewHolderWithoutBinding<T : Any>(protected val mContext: Context) :
+abstract class BasicViewHolderWithoutBinding<T : Any?>(protected val mContext: Context) :
     BasicView, LifecycleObserver {
     abstract fun getItemView():View
     init {
