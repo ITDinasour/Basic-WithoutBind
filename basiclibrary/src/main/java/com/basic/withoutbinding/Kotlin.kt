@@ -6,11 +6,15 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
+import android.text.TextPaint
 import android.util.TypedValue
 import android.view.View
+import android.widget.TextView
 
 /**
  *    @author : Jeffrey
@@ -68,4 +72,15 @@ fun Application.killAppProcess() {
     System.exit(0);
 //表示是非正常退出，通常这种退出方式应该放在catch块中
 //    System.exit(1);
+}
+
+fun TextView.setTextColorHorizontalGradient(colorArray: IntArray) {
+    setTextColor(BasicUtil.getColor(context, android.R.color.white))
+    post {
+        val paint: TextPaint = paint
+        val width = paint.measureText(text.toString())
+        paint.shader =
+            LinearGradient(0f, 0f, width, textSize, colorArray, null, Shader.TileMode.CLAMP)
+        invalidate()
+    }
 }

@@ -155,7 +155,6 @@ object BasicUtil {
         return packageInfo.firstInstallTime == packageInfo.lastUpdateTime
     }
 
-
     fun isDebug(context: Context) =
         runCatching {
             (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0

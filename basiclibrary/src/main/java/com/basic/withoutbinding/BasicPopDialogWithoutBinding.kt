@@ -1,4 +1,5 @@
 package com.basic.withoutbinding
+
 import android.app.Activity
 import android.view.Gravity
 import android.view.View
@@ -13,31 +14,30 @@ import androidx.lifecycle.OnLifecycleEvent
 /**
  *    @author : Jeffrey
  *    @date   : 2021/5/12-19:42
- *    @泛型   : T-用于链式结构返回类型，填写当前PopDialog，VB-PopWindow布局的ViewBinding类型
+ *    @泛型   : A-当前PopDialog的Activity限制类型
  *    @version: 1.0
  */
-abstract class BasicPopDialogWithoutBinding<T : BasicPopDialogWithoutBinding<T, *>, A : Activity>(protected val mActivity: A) :
-    BasicView, LifecycleObserver {
+abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivity: A) :
+        BasicView, LifecycleObserver {
     protected var mPopWindow: PopupWindow
     protected abstract fun initContentView(): View
 
-    @JvmField
-    protected var onDismissListener: PopupWindow.OnDismissListener? = null
+    var onDismissListener: PopupWindow.OnDismissListener? = null
 
     protected var systemUiVisibility = 0
 
     init {
         mPopWindow =
-            PopupWindow(initContentView(), getLayoutWidth(), getLayoutHeight(), true).apply {
-                animationStyle = R.style.ScaleAnimStyle
-                setBackgroundDrawable(
-                    getBasicDrawable(R.drawable.transparent)
-                )
-                setOnDismissListener {
-                    onPopWindowDismiss()
-                    onDismissListener?.onDismiss()
+                PopupWindow(initContentView(), getLayoutWidth(), getLayoutHeight(), true).apply {
+                    animationStyle = R.style.ScaleAnimStyle
+                    setBackgroundDrawable(
+                            getBasicDrawable(R.drawable.transparent)
+                    )
+                    setOnDismissListener {
+                        onPopWindowDismiss()
+                        onDismissListener?.onDismiss()
+                    }
                 }
-            }
         systemUiVisibility = 0
         if (mActivity is LifecycleOwner) {
             mActivity.lifecycle.addObserver(this)
@@ -53,20 +53,20 @@ abstract class BasicPopDialogWithoutBinding<T : BasicPopDialogWithoutBinding<T, 
             systemUiVisibility = decorView.systemUiVisibility
             decorView.post {
                 mPopWindow.showAtLocation(
-                    decorView,
-                    getShowGravity(),
-                    getShowLocationX(),
-                    getShowLocationY()
+                        decorView,
+                        getShowGravity(),
+                        getShowLocationX(),
+                        getShowLocationY()
                 )
             }
         }
     }
 
     open fun show(
-        locationView: View,
-        offsetX: Int,
-        offsetY: Int,
-        gravity: Int = Gravity.NO_GRAVITY
+            locationView: View,
+            offsetX: Int,
+            offsetY: Int,
+            gravity: Int = Gravity.NO_GRAVITY
     ) {
         if (!mPopWindow.isShowing) {
             systemUiVisibility = 0
@@ -75,7 +75,7 @@ abstract class BasicPopDialogWithoutBinding<T : BasicPopDialogWithoutBinding<T, 
                 val location = IntArray(2)
                 locationView.getLocationOnScreen(location)
                 mPopWindow.showAtLocation(
-                    locationView, gravity, location[0] + offsetX, location[1] + offsetY
+                        locationView, gravity, location[0] + offsetX, location[1] + offsetY
                 )
             }
         }
@@ -88,12 +88,6 @@ abstract class BasicPopDialogWithoutBinding<T : BasicPopDialogWithoutBinding<T, 
     }
 
     open fun isShowing() = mPopWindow.isShowing
-
-
-    open fun setOnDismissListener(onDismissListener: PopupWindow.OnDismissListener?): T {
-        this.onDismissListener = onDismissListener
-        return this as T
-    }
 
     protected open fun onPopWindowDismiss() {
         if (systemUiVisibility != 0) {
