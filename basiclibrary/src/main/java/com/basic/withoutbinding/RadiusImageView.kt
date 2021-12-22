@@ -1,4 +1,5 @@
 package com.basic.withoutbinding
+
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Path
@@ -76,8 +77,10 @@ class RadiusImageView : AppCompatImageView {
     }
 
     private fun initRadius(attrs: AttributeSet?) {
-        val a = context.obtainStyledAttributes(attrs,
-            R.styleable.RadiusImageView, 0, 0)
+        val a = context.obtainStyledAttributes(
+            attrs,
+            R.styleable.RadiusImageView, 0, 0
+        )
         radiusRes = a.getLayoutDimension(R.styleable.RadiusImageView_radius, 0)
         radiusLtRes = a.getLayoutDimension(R.styleable.RadiusImageView_radiusLeftTop, 0)
         radiusRtRes = a.getLayoutDimension(R.styleable.RadiusImageView_radiusRightTop, 0)
@@ -92,8 +95,8 @@ class RadiusImageView : AppCompatImageView {
         radius = if (radiusRes == -1) halfSize else radiusRes
         radiusLT = if (radiusLtRes == -1) halfSize else radiusLtRes
         radiusRT = if (radiusRtRes == -1) halfSize else radiusRtRes
-        radiusRB = if (radiusLbRes == -1) halfSize else radiusLbRes
-        radiusLB = if (radiusRbRes == -1) halfSize else radiusRbRes
+        radiusRB = if (radiusRbRes == -1) halfSize else radiusRbRes
+        radiusLB = if (radiusLbRes == -1) halfSize else radiusLbRes
         refreshRadiusLine()
     }
 
@@ -116,17 +119,14 @@ class RadiusImageView : AppCompatImageView {
         //        右下轮角
         clipPath.arcTo(
             RectF(
-                width - radiusRbPul * 2f,
-                height - radiusRbPul * 2f,
-                width.toFloat(),
-                height.toFloat()
+                width - radiusRbPul * 2f, height - radiusRbPul * 2f,
+                width.toFloat(), height.toFloat()
             ), 0f, 90f
         )
         //        左下轮角
         clipPath.arcTo(
             RectF(0f, height - radiusLbPul * 2f, radiusLbPul * 2f, height.toFloat()),
-            90f,
-            90f
+            90f, 90f
         )
         clipPath.close()
     }
@@ -139,7 +139,7 @@ class RadiusImageView : AppCompatImageView {
                 clipPath(clipPath)
                 super.onDraw(canvas)
             }
-        }else{
+        } else {
             super.onDraw(canvas)
         }
     }
