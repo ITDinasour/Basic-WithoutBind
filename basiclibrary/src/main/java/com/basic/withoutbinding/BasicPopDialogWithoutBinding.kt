@@ -18,7 +18,7 @@ import androidx.lifecycle.OnLifecycleEvent
  *    @version: 1.0
  */
 abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivity: A) :
-        BasicView, LifecycleObserver {
+    BasicView, LifecycleObserver {
     protected var mPopWindow: PopupWindow
     protected abstract fun initContentView(): View
 
@@ -28,16 +28,16 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
 
     init {
         mPopWindow =
-                PopupWindow(initContentView(), getLayoutWidth(), getLayoutHeight(), true).apply {
-                    animationStyle = R.style.ScaleAnimStyle
-                    setBackgroundDrawable(
-                            getBasicDrawable(R.drawable.transparent)
-                    )
-                    setOnDismissListener {
-                        onPopWindowDismiss()
-                        onDismissListener?.onDismiss()
-                    }
+            PopupWindow(initContentView(), getLayoutWidth(), getLayoutHeight(), true).apply {
+                animationStyle = R.style.ScaleAnimStyle
+                setBackgroundDrawable(
+                    getBasicDrawable(R.drawable.transparent)
+                )
+                setOnDismissListener {
+                    onPopWindowDismiss()
+                    onDismissListener?.onDismiss()
                 }
+            }
         systemUiVisibility = 0
         if (mActivity is LifecycleOwner) {
             mActivity.lifecycle.addObserver(this)
@@ -47,37 +47,35 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
 
 
     open fun show() {
-        if (!mPopWindow.isShowing) {
-            setBackgroundAlpha(0.5f)
-            val decorView = mActivity.window.decorView
-            systemUiVisibility = decorView.systemUiVisibility
-            decorView.post {
-                mPopWindow.showAtLocation(
-                        decorView,
-                        getShowGravity(),
-                        getShowLocationX(),
-                        getShowLocationY()
-                )
-            }
+        if (mActivity.isFinishing || mActivity.isDestroyed || mPopWindow.isShowing) {
+            return
+        }
+        setBackgroundAlpha(0.5f)
+        val decorView = mActivity.window.decorView
+        systemUiVisibility = decorView.systemUiVisibility
+        decorView.post {
+            mPopWindow.showAtLocation(
+                decorView, getShowGravity(),
+                getShowLocationX(), getShowLocationY()
+            )
         }
     }
 
     open fun show(
-            locationView: View,
-            offsetX: Int,
-            offsetY: Int,
-            gravity: Int = Gravity.NO_GRAVITY
+        locationView: View,
+        offsetX: Int, offsetY: Int, gravity: Int = Gravity.NO_GRAVITY
     ) {
-        if (!mPopWindow.isShowing) {
-            systemUiVisibility = 0
-            BasicUtil.logI("offsetX=$offsetX,offsetY=$offsetY")
-            locationView.post {
-                val location = IntArray(2)
-                locationView.getLocationOnScreen(location)
-                mPopWindow.showAtLocation(
-                        locationView, gravity, location[0] + offsetX, location[1] + offsetY
-                )
-            }
+        if (mActivity.isFinishing || mActivity.isDestroyed || mPopWindow.isShowing) {
+            return
+        }
+        systemUiVisibility = 0
+        BasicUtil.logI("offsetX=$offsetX,offsetY=$offsetY")
+        locationView.post {
+            val location = IntArray(2)
+            locationView.getLocationOnScreen(location)
+            mPopWindow.showAtLocation(
+                locationView, gravity, location[0] + offsetX, location[1] + offsetY
+            )
         }
     }
 
