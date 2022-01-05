@@ -30,9 +30,7 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
         mPopWindow =
             PopupWindow(initContentView(), getLayoutWidth(), getLayoutHeight(), true).apply {
                 animationStyle = R.style.ScaleAnimStyle
-                setBackgroundDrawable(
-                    getBasicDrawable(R.drawable.transparent)
-                )
+                setBackgroundDrawable(getBasicDrawable(R.drawable.transparent))
                 setOnDismissListener {
                     onDismiss()
                     onDismissListener?.onDismiss()
