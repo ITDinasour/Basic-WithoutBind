@@ -20,7 +20,6 @@ abstract class BasicViewHolderWithoutBinding<T : Any?>(protected val mContext: C
         if (mContext is LifecycleOwner) {
             mContext.lifecycle.addObserver(this)
         }
-        addOnClickListeners(getClickableViews())
     }
 
     open fun initView(data: T) {}
