@@ -19,7 +19,7 @@ import androidx.lifecycle.OnLifecycleEvent
  */
 abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivity: A) :
     BasicView, LifecycleObserver {
-    protected var mPopWindow: PopupWindow
+    protected val mPopWindow: PopupWindow
     protected abstract fun initContentView(): View
 
     var onDismissListener: PopupWindow.OnDismissListener? = null
@@ -34,7 +34,7 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
                     getBasicDrawable(R.drawable.transparent)
                 )
                 setOnDismissListener {
-                    onPopWindowDismiss()
+                    onDismiss()
                     onDismissListener?.onDismiss()
                 }
             }
@@ -47,72 +47,83 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
 
 
     open fun show() {
-        if (mActivity.isFinishing || mActivity.isDestroyed || mPopWindow.isShowing) {
-            return
-        }
-        setBackgroundAlpha(0.5f)
         val decorView = mActivity.window.decorView
         systemUiVisibility = decorView.systemUiVisibility
-        decorView.post {
-            mPopWindow.showAtLocation(
-                decorView, getShowGravity(),
-                getShowLocationX(), getShowLocationY()
-            )
-        }
+        showPopWindow(decorView, getShowGravity(), getShowLocationX(), getShowLocationY())
     }
 
+
     open fun show(
-        locationView: View,
-        offsetX: Int, offsetY: Int, gravity: Int = Gravity.NO_GRAVITY
+        locationView: View, gravity: Int = Gravity.NO_GRAVITY
+        , offsetX: Int, offsetY: Int
     ) {
-        if (mActivity.isFinishing || mActivity.isDestroyed || mPopWindow.isShowing) {
-            return
-        }
         systemUiVisibility = 0
-        BasicUtil.logI("offsetX=$offsetX,offsetY=$offsetY")
         locationView.post {
             val location = IntArray(2)
             locationView.getLocationOnScreen(location)
-            mPopWindow.showAtLocation(
-                locationView, gravity, location[0] + offsetX, location[1] + offsetY
-            )
+            showPopWindow(locationView, gravity, location[0] + offsetX, location[1] + offsetY)
         }
     }
 
-    open fun dismiss() {
+    protected open fun showPopWindow(locationView: View, gravity: Int, x: Int, y: Int) {
+        if (mActivity.isFinishing || mActivity.isDestroyed || mPopWindow.isShowing) {
+            return
+        }
+        getShowAlpha().apply {
+            if (this != 1F) {
+                setBackgroundAlpha(this)
+            }
+        }
+        locationView.post {
+            runCatching {
+                mPopWindow.showAtLocation(locationView, gravity, x, y)
+            }.onSuccess {
+                onShow()
+            }.onFailure {
+                onShowFail()
+            }
+        }
+    }
+
+
+    open fun isShowing() = mPopWindow.isShowing
+
+
+    protected open fun dismiss() {
         if (mPopWindow.isShowing) {
             mPopWindow.dismiss()
         }
     }
 
-    open fun isShowing() = mPopWindow.isShowing
-
-    protected open fun onPopWindowDismiss() {
+    protected open fun onDismiss() {
         if (systemUiVisibility != 0) {
             mActivity.window.decorView.systemUiVisibility = systemUiVisibility
         }
-        setBackgroundAlpha(1f)
+        getShowAlpha().apply {
+            if (this != 1F) {
+                setBackgroundAlpha(1F)
+            }
+        }
     }
 
     protected open fun setBackgroundAlpha(bgAlpha: Float) {
+        val bgAlphaSet = bgAlpha.coerceAtMost(1F).coerceAtLeast(0F)
         val activityWindow = mActivity.window
         val lp = activityWindow.attributes
         //0.0-1.0
-        lp.alpha = bgAlpha
+        lp.alpha = bgAlphaSet
         activityWindow.attributes = lp
         activityWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }
 
     protected open fun getLayoutHeight() = WindowManager.LayoutParams.WRAP_CONTENT
-
     protected open fun getLayoutWidth() = WindowManager.LayoutParams.MATCH_PARENT
-
+    protected open fun getShowAlpha(): Float = 0.5f
     protected open fun getShowGravity() = Gravity.CENTER
-
     protected open fun getShowLocationX() = 0
-
     protected open fun getShowLocationY() = 0
-
+    protected open fun onShow() {}
+    protected open fun onShowFail() {}
     override fun getContext() = mActivity
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
