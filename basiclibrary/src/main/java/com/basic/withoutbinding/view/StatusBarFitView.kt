@@ -1,4 +1,4 @@
-package com.basic.withoutbinding
+package com.basic.withoutbinding.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -21,11 +21,11 @@ class StatusBarFitView : View {
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr)
 
-init {
-    if (visibility == VISIBLE) {
-        visibility = INVISIBLE
+    init {
+        if (visibility == VISIBLE) {
+            visibility = INVISIBLE
+        }
     }
-}
 
     /**
      * Draw nothing.

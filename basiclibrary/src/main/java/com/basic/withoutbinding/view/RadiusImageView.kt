@@ -1,4 +1,4 @@
-package com.basic.withoutbinding
+package com.basic.withoutbinding.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import androidx.annotation.Dimension
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.withSave
+import com.basic.withoutbinding.R
 
 /**
  *    @author : Jeffrey
