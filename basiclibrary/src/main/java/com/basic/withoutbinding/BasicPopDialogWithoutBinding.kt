@@ -40,7 +40,6 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
         if (mActivity is LifecycleOwner) {
             mActivity.lifecycle.addObserver(this)
         }
-        addOnClickListeners(getClickableViews())
     }
 
 

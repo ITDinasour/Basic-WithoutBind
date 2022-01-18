@@ -29,7 +29,7 @@ class SafeHandler(context: Context, callBack: Callback? = null, autoRegisterLife
     private val mContext: WeakReference<Context?> = WeakReference(context)
     override fun dispatchMessage(msg: Message) {
         mContext.get()?.apply {
-            if (this is Activity && isFinishing) {
+            if (this is Activity && (isFinishing || isDestroyed)) {
                 return
             }
         } ?: apply {

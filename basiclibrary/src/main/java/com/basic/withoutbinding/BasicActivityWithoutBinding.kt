@@ -1,4 +1,5 @@
 package com.basic.withoutbinding
+
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -26,7 +27,6 @@ abstract class BasicActivityWithoutBinding : AppCompatActivity(), BasicView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initContentView()
-        addOnClickListeners(getClickableViews())
         initView()
         initData()
     }

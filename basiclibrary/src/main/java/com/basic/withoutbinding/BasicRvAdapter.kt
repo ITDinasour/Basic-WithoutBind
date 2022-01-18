@@ -1,4 +1,5 @@
 package com.basic.withoutbinding
+
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
@@ -13,7 +14,7 @@ import kotlin.collections.ArrayList
  *    @desc   :
  *    @version: 1.0
  */
-abstract class BasicRvAdapter <B : Any?, VH : BasicRvViewHolderWithoutBinding<B>> :
+abstract class BasicRvAdapter<B : Any?, VH : BasicRvViewHolderWithoutBinding<B>> :
     RecyclerView.Adapter<VH>() {
 
     protected abstract fun getNewCreateViewHolder(parent: ViewGroup, viewType: Int): VH
@@ -61,10 +62,10 @@ abstract class BasicRvAdapter <B : Any?, VH : BasicRvViewHolderWithoutBinding<B>
     }
 
     override fun onBindViewHolder(holder: VH, position: Int, payloads: MutableList<Any>) {
-        payloads.firstOrNull()?.apply {
-            if (this is Bundle) {
-                val filter = (this as Bundle).keySet().filter {
-                    updateViewHolder(holder, position, it, this)
+        payloads.firstOrNull()?.also { bundle ->
+            if (bundle is Bundle) {
+                val filter = bundle.keySet().filter { updateType ->
+                    updateViewHolder(holder, position, updateType, bundle)
                 }
                 if (filter.isNotEmpty()) {
                     return
@@ -90,8 +91,9 @@ abstract class BasicRvAdapter <B : Any?, VH : BasicRvViewHolderWithoutBinding<B>
         }
         return false
     }
-//https://blog.csdn.net/weixin_38380115/article/details/88887238
-    override fun getItemCount() = if(mDataList==null)0 else mDataList.size
+
+    //https://blog.csdn.net/weixin_38380115/article/details/88887238
+    override fun getItemCount() = if (mDataList == null) 0 else mDataList.size
 
     /**
      * 在列表结尾插入数据
@@ -263,12 +265,16 @@ abstract class BasicRvAdapter <B : Any?, VH : BasicRvViewHolderWithoutBinding<B>
     }
 
     protected open fun updateViewItemSelected(b: Boolean, updatePosition: Int) =
-        notifyItemChanged(updatePosition,
+        notifyItemChanged(
+            updatePosition,
             BasicRvViewHolderWithoutBinding.UpdateViewType.UpdateViewSelectedState
         )
 
     fun notifyItemChanged(updatePosition: Int, keyUpdate: String) =
-        notifyItemChanged(updatePosition, bundleOf(Pair(keyUpdate, true)))
+        notifyItemRangeChanged(updatePosition, 1, keyUpdate)
+
+    fun notifyItemRangeChanged(positionStart: Int, itemCount: Int, keyUpdate: String) =
+        notifyItemRangeChanged(positionStart, itemCount, bundleOf(Pair(keyUpdate, true)))
 
     /**
      * 判断一个条目是否被选中

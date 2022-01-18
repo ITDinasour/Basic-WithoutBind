@@ -21,7 +21,6 @@ open class BasicRvViewHolderWithoutBinding<T : Any?>(itemView: View) :
         if (mContext is LifecycleOwner) {
             (mContext as LifecycleOwner).lifecycle.addObserver(this)
         }
-        addOnClickListeners(getClickableViews())
     }
 
 

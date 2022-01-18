@@ -15,8 +15,7 @@ import androidx.annotation.StringRes
  *    @version: 1.0
  */
 interface BasicView {
-
-    fun getClickableViews(): Array<out View>? = null
+    fun getContext(): Context
 
     fun addOnClickListeners(views: List<View>?) {
         views?.forEach { addOnClickListener(it) }
@@ -30,7 +29,6 @@ interface BasicView {
         views.forEach { addOnClickListener(it) }
     }
 
-
     fun addOnClickListener(view: View, onClick: ((View) -> Unit)? = null) {
         val function = onClick ?: (::onClickView)
         view.setOnClickListener(function)
@@ -41,9 +39,7 @@ interface BasicView {
     }
 
     fun onClickView(view: View) {}
-
-    fun getContext(): Context
-
+    fun getClickableViews(): Array<out View>? = null
     fun getBasicColor(@ColorRes colorRes: Int) = BasicUtil.getColor(getContext(), colorRes)
     fun getBasicString(@StringRes resId: Int) = BasicUtil.getString(getContext(), resId)
     fun getBasicDimension(@DimenRes dimResId: Int) = BasicUtil.getDimension(getContext(), dimResId)

@@ -111,26 +111,7 @@ object BasicUtil {
     }
 
 
-    fun drawable2Bitmap(drawable: Drawable): Bitmap {
-        //        如果是bitmap则直接转成bitmap
-        if (drawable is BitmapDrawable) {
-            return drawable.bitmap
-        }
-        //        如果不是bitmap，则画出bitmap
-        val config =
-            if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.ARGB_4444
-        val w = drawable.intrinsicWidth
-        val h = drawable.intrinsicHeight
-        val bitmap = if (h <= 0 || w <= 0) {
-            Bitmap.createBitmap(1, 1, config) // Single color bitmap will be created of 1x1 pixel
-        } else {
-            Bitmap.createBitmap(w, h, config)
-        }
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, w, h)
-        drawable.draw(canvas)
-        return bitmap
-    }
+    fun drawable2Bitmap(drawable: Drawable): Bitmap =drawable.toBitmap()
 
     /**
      * 获取屏幕宽度

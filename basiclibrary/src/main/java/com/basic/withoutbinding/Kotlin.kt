@@ -6,8 +6,12 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
@@ -15,6 +19,11 @@ import android.text.TextPaint
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.Px
+import androidx.core.graphics.component1
+import androidx.core.graphics.component2
+import androidx.core.graphics.component3
+import androidx.core.graphics.component4
 
 /**
  *    @author : Jeffrey
@@ -83,4 +92,33 @@ fun TextView.setTextColorHorizontalGradient(colorArray: IntArray) {
             LinearGradient(0f, 0f, width, textSize, colorArray, null, Shader.TileMode.CLAMP)
         invalidate()
     }
+}
+
+fun Drawable.toBitmap(
+    @Px width: Int = intrinsicWidth,
+    @Px height: Int = intrinsicHeight,
+    config: Bitmap.Config? = null
+): Bitmap {
+    if (this is BitmapDrawable) {
+        if (config == null || bitmap.config == config) {
+            // Fast-path to return original. Bitmap.createScaledBitmap will do this check, but it
+            // involves allocation and two jumps into native code so we perform the check ourselves.
+            if (width == intrinsicWidth && height == intrinsicHeight) {
+                return bitmap
+            }
+            return Bitmap.createScaledBitmap(bitmap, width, height, true)
+        }
+    }
+    val (oldLeft, oldTop, oldRight, oldBottom) = bounds
+    val bitmap = if (height <= 0 || width <= 0) {
+        Bitmap.createBitmap(
+            1, 1, config ?: Bitmap.Config.ARGB_8888
+        ) // Single color bitmap will be created of 1x1 pixel
+    } else {
+        Bitmap.createBitmap(width, height, config ?: Bitmap.Config.ARGB_8888)
+    }
+    setBounds(0, 0, width, height)
+    draw(Canvas(bitmap))
+    setBounds(oldLeft, oldTop, oldRight, oldBottom)
+    return bitmap
 }

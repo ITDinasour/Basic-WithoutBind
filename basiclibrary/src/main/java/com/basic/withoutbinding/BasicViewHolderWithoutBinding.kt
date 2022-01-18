@@ -1,7 +1,7 @@
 package com.basic.withoutbinding
+
 import android.content.Context
 import android.view.View
-import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -15,7 +15,8 @@ import androidx.lifecycle.OnLifecycleEvent
  */
 abstract class BasicViewHolderWithoutBinding<T : Any?>(protected val mContext: Context) :
     BasicView, LifecycleObserver {
-    abstract fun getItemView():View
+    abstract fun getItemView(): View
+
     init {
         if (mContext is LifecycleOwner) {
             mContext.lifecycle.addObserver(this)
@@ -29,7 +30,6 @@ abstract class BasicViewHolderWithoutBinding<T : Any?>(protected val mContext: C
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    @CallSuper
     protected open fun onActivityDestroy() {
     }
 }
