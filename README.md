@@ -14,6 +14,6 @@
  Step 2. Add the dependency
  ```kotlin 
  	dependencies {
- 	        implementation 'com.github.ITDinasour:Basic-WithoutBind:0.2.3'
+ 	        implementation 'com.github.ITDinasour:Basic-WithoutBind:0.2.4'
  	}
 ```  
