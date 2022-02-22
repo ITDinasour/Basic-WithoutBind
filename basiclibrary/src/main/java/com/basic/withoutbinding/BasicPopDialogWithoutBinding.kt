@@ -30,6 +30,7 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
         mPopWindow =
             PopupWindow(initContentView(), getLayoutWidth(), getLayoutHeight(), true).apply {
                 animationStyle = R.style.ScaleAnimStyle
+                isClippingEnabled = true
                 setBackgroundDrawable(getBasicDrawable(R.drawable.transparent))
                 setOnDismissListener {
                     onDismiss()
@@ -51,8 +52,7 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
 
 
     open fun show(
-        locationView: View, gravity: Int = Gravity.NO_GRAVITY
-        , offsetX: Int, offsetY: Int
+        locationView: View, gravity: Int = Gravity.NO_GRAVITY, offsetX: Int, offsetY: Int
     ) {
         systemUiVisibility = 0
         locationView.post {
