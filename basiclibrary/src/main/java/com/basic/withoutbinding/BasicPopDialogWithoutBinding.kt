@@ -86,7 +86,7 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
     open fun isShowing() = mPopWindow.isShowing
 
 
-    protected open fun dismiss() {
+    open fun dismiss() {
         if (mPopWindow.isShowing) {
             mPopWindow.dismiss()
         }
