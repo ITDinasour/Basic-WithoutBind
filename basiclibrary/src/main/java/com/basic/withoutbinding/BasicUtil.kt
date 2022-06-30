@@ -7,9 +7,6 @@ import android.content.pm.ApplicationInfo
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.PixelFormat
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.annotation.ColorRes
@@ -68,13 +65,14 @@ object BasicUtil {
         return BitmapFactory.decodeStream(res.openRawResource(+resId), null, options)
     }
 
-    fun getInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
-        val height = options.outHeight
-        val width = options.outWidth
+    fun getInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int) =
+        getInSampleSize(options.outWidth, options.outHeight, reqWidth, reqHeight)
+
+    fun getInSampleSize(sourceWidth: Int, sourceHeight: Int, reqWidth: Int, reqHeight: Int): Int {
         var inSampleSize = 1
-        if (height > reqHeight || width > reqWidth) {
-            val halfHeight = height / 2
-            val halfWidth = width / 2
+        if (sourceHeight > reqHeight || sourceWidth > reqWidth) {
+            val halfHeight = sourceHeight / 2
+            val halfWidth = sourceWidth / 2
             while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
                 inSampleSize *= 2
             }
@@ -111,7 +109,7 @@ object BasicUtil {
     }
 
 
-    fun drawable2Bitmap(drawable: Drawable): Bitmap =drawable.toBitmap()
+    fun drawable2Bitmap(drawable: Drawable): Bitmap = drawable.toBitmap()
 
     /**
      * 获取屏幕宽度

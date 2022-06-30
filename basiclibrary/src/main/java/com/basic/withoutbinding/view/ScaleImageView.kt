@@ -10,11 +10,9 @@ import androidx.appcompat.widget.AppCompatImageView
  *    @desc   :
  *    @version: 1.0
  */
-open class ScaleImageView : AppCompatImageView {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+open class ScaleImageView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     init {
         ViewScaleHelper(this)

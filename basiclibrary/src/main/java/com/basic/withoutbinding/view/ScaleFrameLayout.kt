@@ -10,11 +10,9 @@ import android.widget.FrameLayout
  *    @desc   :
  *    @version: 1.0
  */
-open class ScaleFrameLayout : FrameLayout {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+open class ScaleFrameLayout @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+): FrameLayout(context, attrs, defStyleAttr) {
 
     init {
         ViewScaleHelper(this)

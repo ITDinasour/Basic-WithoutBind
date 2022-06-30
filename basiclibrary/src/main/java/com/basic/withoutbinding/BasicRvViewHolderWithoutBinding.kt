@@ -1,4 +1,5 @@
 package com.basic.withoutbinding
+
 import android.content.Context
 import android.view.View
 import androidx.lifecycle.Lifecycle
@@ -18,9 +19,7 @@ open class BasicRvViewHolderWithoutBinding<T : Any?>(itemView: View) :
     protected val mContext: Context = itemView.context
 
     init {
-        if (mContext is LifecycleOwner) {
-            (mContext as LifecycleOwner).lifecycle.addObserver(this)
-        }
+        mContext.realAction<LifecycleOwner> { lifecycle.addObserver(this@BasicRvViewHolderWithoutBinding) }
     }
 
 

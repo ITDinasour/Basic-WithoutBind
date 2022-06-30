@@ -72,13 +72,6 @@ abstract class BasicFragmentWithoutBinding<A : AppCompatActivity> : Fragment(), 
         }
     }
 
-    /**
-     * 获取绑定的Activity，防止出现 getActivity() 为空
-     */
-    fun getBindingActivity(): A? {
-        return mActivity
-    }
-
     override fun getContext(): Context {
         return mActivity
     }

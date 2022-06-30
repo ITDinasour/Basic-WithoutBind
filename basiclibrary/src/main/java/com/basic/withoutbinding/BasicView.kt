@@ -29,13 +29,13 @@ interface BasicView {
         views.forEach { addOnClickListener(it) }
     }
 
-    fun addOnClickListener(view: View, onClick: ((View) -> Unit)? = null) {
-        val function = onClick ?: (::onClickView)
-        view.setOnClickListener(function)
-    }
-
     fun addOnClickListener(onClickView: (View) -> Unit, vararg views: View) {
         views.forEach { addOnClickListener(it, onClickView) }
+    }
+
+    fun addOnClickListener(view: View, onClick: ((View) -> Unit)? = null) {
+        onClick?.apply { view.setOnClickListener(this) }
+            ?: apply { view.setOnClickListener(::onClickView) }
     }
 
     fun onClickView(view: View) {}
@@ -79,8 +79,7 @@ fun View.show(): Boolean {
 /**
  * 状态监测 - VISIBLE
  */
-val View.isVisible: Boolean
-    get() = visibility == View.VISIBLE
+val View.isVisible: Boolean get() = visibility == View.VISIBLE
 
 /**
  * 不展示 - INVISIBLE
@@ -96,8 +95,7 @@ fun View.notShow(): Boolean {
 /**
  * 状态监测 - INVISIBLE
  */
-val View.isInvisible: Boolean
-    get() = visibility == View.INVISIBLE
+val View.isInvisible: Boolean get() = visibility == View.INVISIBLE
 
 /**
  * 隐藏 - GONE
@@ -113,8 +111,7 @@ fun View.hide(): Boolean {
 /**
  * 状态监测 - INVISIBLE
  */
-val View.isGone: Boolean
-    get() = visibility == View.GONE
+val View.isGone: Boolean get() = visibility == View.GONE
 
 /**
  * 隐藏或展示

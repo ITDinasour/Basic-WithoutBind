@@ -9,26 +9,33 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tv_hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"  />
-    <com.basic.withoutbinding.RadiusImageView
+        android:text="Hello World!" />
+
+    <com.basic.withoutbinding.view.RadiusImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:radius="half_size"
-        android:src="@drawable/ic_launcher_background"/>
-    <com.basic.withoutbinding.RadiusImageView
+        android:layout_margin="10dp"
+        android:src="#F00"
+        app:radius="half_size" />
+
+    <com.basic.withoutbinding.view.RadiusImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:radius="20dp"
-        android:src="@drawable/ic_launcher_background"/>
-    <com.basic.withoutbinding.RadiusImageView
+        android:layout_margin="10dp"
+        android:src="#F00"
+        app:radius="20dp" />
+
+    <com.basic.withoutbinding.view.RadiusImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:radiusLeftTop="10dp"
-        app:radiusRightTop="20dp"
-        app:radiusRightBottom="30dp"
+        android:layout_margin="10dp"
+        android:src="#F00"
         app:radiusLeftBottom="40dp"
-        android:src="@drawable/ic_launcher_background"/>
+        app:radiusLeftTop="10dp"
+        app:radiusRightBottom="30dp"
+        app:radiusRightTop="20dp" />
 
 </LinearLayout>

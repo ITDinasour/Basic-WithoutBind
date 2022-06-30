@@ -10,7 +10,7 @@ import android.view.View
  *    @desc   :
  *    @version: 1.0
  */
-class ViewScaleHelper(
+open class ViewScaleHelper(
     val view: View, private val scaleSize: Float = 0.79f, private var scaleTime: Long = 101
 ) {
     init {
