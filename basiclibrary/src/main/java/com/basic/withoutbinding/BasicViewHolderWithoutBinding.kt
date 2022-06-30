@@ -18,9 +18,7 @@ abstract class BasicViewHolderWithoutBinding<T : Any?>(protected val mContext: C
     abstract fun getItemView(): View
 
     init {
-        if (mContext is LifecycleOwner) {
-            mContext.lifecycle.addObserver(this)
-        }
+        mContext.realAction<LifecycleOwner> {  lifecycle.addObserver(this@BasicViewHolderWithoutBinding)}
     }
 
     open fun initView(data: T) {}

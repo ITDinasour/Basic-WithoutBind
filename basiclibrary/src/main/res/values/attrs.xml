@@ -10,10 +10,10 @@
         <attr name="radiusRightTop" format="dimension">
             <enum name="half_size" value="-1" />
         </attr>
-        <attr name="radiusLeftBottom" format="dimension">
+        <attr name="radiusRightBottom" format="dimension">
             <enum name="half_size" value="-1" />
         </attr>
-        <attr name="radiusRightBottom" format="dimension">
+        <attr name="radiusLeftBottom" format="dimension">
             <enum name="half_size" value="-1" />
         </attr>
     </declare-styleable>

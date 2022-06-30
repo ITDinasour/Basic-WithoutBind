@@ -38,9 +38,6 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
                 }
             }
         systemUiVisibility = 0
-        if (mActivity is LifecycleOwner) {
-            mActivity.lifecycle.addObserver(this)
-        }
     }
 
 
@@ -82,10 +79,14 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
         }
     }
 
+    protected open fun onShow() {
+        mActivity.realAction<LifecycleOwner> {
+            lifecycle.removeObserver(this@BasicPopDialogWithoutBinding)
+            lifecycle.addObserver(this@BasicPopDialogWithoutBinding)
+        }
+    }
 
     open fun isShowing() = mPopWindow.isShowing
-
-
     open fun dismiss() {
         if (mPopWindow.isShowing) {
             mPopWindow.dismiss()
@@ -101,6 +102,7 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
                 setBackgroundAlpha(1F)
             }
         }
+        mActivity.real<LifecycleOwner>()?.lifecycle?.removeObserver(this)
     }
 
     protected open fun setBackgroundAlpha(bgAlpha: Float) {
@@ -119,7 +121,6 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
     protected open fun getShowGravity() = Gravity.CENTER
     protected open fun getShowLocationX() = 0
     protected open fun getShowLocationY() = 0
-    protected open fun onShow() {}
     protected open fun onShowFail() {}
     override fun getContext() = mActivity
 

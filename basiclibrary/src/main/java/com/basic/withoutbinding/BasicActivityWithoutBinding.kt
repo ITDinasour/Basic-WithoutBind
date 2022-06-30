@@ -20,8 +20,8 @@ abstract class BasicActivityWithoutBinding : AppCompatActivity(), BasicView {
     protected abstract fun initData()
     protected abstract fun initContentView()
 
-    val mHandler by lazy(LazyThreadSafetyMode.PUBLICATION) {
-        SafeHandler(this, Handler.Callback { msg: Message -> handleMessage(msg) })
+    open val mHandler by lazy(LazyThreadSafetyMode.PUBLICATION) {
+        SafeHandler(this, Handler.Callback {handleMessage(it)})
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -16,25 +16,23 @@ import java.lang.ref.WeakReference
  *    @desc   :
  *    @version: 1.0
  */
-class SafeHandler(context: Context, callBack: Callback? = null, autoRegisterLife: Boolean = true) :
-    Handler(context.mainLooper, callBack), LifecycleObserver {
+open class SafeHandler(
+    context: Context, callBack: Callback? = null, autoRegisterLife: Boolean = true
+) : Handler(context.mainLooper, callBack), LifecycleObserver {
     init {
         if (autoRegisterLife) {
-            if (context is LifecycleOwner) {
-                context.lifecycle.addObserver(this)
-            }
+            context.real<LifecycleOwner>()?.lifecycle?.addObserver(this)
         }
     }
 
     private val mContext: WeakReference<Context?> = WeakReference(context)
     override fun dispatchMessage(msg: Message) {
-        mContext.get()?.apply {
-            if (this is Activity && (isFinishing || isDestroyed)) {
+        mContext.get()?.realAction<Activity> {
+            if (isFinishing || isDestroyed) {
                 return
             }
-        } ?: apply {
-            return
         }
+        mContext.get() ?: apply { return }
         super.dispatchMessage(msg)
     }
 

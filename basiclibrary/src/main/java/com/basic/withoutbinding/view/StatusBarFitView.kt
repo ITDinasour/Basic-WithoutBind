@@ -11,15 +11,9 @@ import android.view.View
  *    @desc   :
  *    @version: 1.0
  */
-class StatusBarFitView : View {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(
-        context: Context?,
-        attrs: AttributeSet?,
-        defStyleAttr: Int
-    ) : super(context, attrs, defStyleAttr)
+class StatusBarFitView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
 
     init {
         if (visibility == VISIBLE) {

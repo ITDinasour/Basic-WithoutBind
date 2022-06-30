@@ -6,10 +6,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.LinearGradient
-import android.graphics.Shader
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -110,15 +107,23 @@ fun Drawable.toBitmap(
         }
     }
     val (oldLeft, oldTop, oldRight, oldBottom) = bounds
-    val bitmap = if (height <= 0 || width <= 0) {
-        Bitmap.createBitmap(
-            1, 1, config ?: Bitmap.Config.ARGB_8888
-        ) // Single color bitmap will be created of 1x1 pixel
-    } else {
-        Bitmap.createBitmap(width, height, config ?: Bitmap.Config.ARGB_8888)
-    }
+    val width = if (width > 0) width else 1
+    val height = if (height > 0) height else 1
+    val config = config ?: Bitmap.Config.ARGB_8888
+    val bitmap = Bitmap.createBitmap(width, height, config)
     setBounds(0, 0, width, height)
     draw(Canvas(bitmap))
     setBounds(oldLeft, oldTop, oldRight, oldBottom)
     return bitmap
 }
+
+
+inline fun <reified T : Any> Any.real(): T? =
+    if (this is T) this else null
+
+inline fun <reified T : Any> Any.realAction(action: T.() -> Unit) {
+    if (this is T) action(this)
+}
+
+inline fun <reified T : Any, R : Any> Any.realActionWithRes(action: T.() -> R): R? =
+    if (this is T) action(this) else null

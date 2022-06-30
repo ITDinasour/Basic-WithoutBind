@@ -16,7 +16,9 @@ import com.basic.withoutbinding.R
  *    @desc   :
  *    @version: 1.0
  */
-class RadiusImageView : AppCompatImageView {
+open class RadiusImageView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : AppCompatImageView(context, attrs, defStyleAttr) {
     var radiusLT = 0
         set(@Dimension value) {
             field = value
@@ -59,35 +61,16 @@ class RadiusImageView : AppCompatImageView {
     private var radiusLbRes = 0
     private var radiusRbRes = 0
 
-    constructor(context: Context) : super(context) {
-    }
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet?
-    ) : super(context, attrs) {
-        initRadius(attrs)
-    }
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int
-    ) : super(context, attrs, defStyleAttr) {
-        initRadius(attrs)
-    }
-
-    private fun initRadius(attrs: AttributeSet?) {
-        val a = context.obtainStyledAttributes(
-            attrs,
-            R.styleable.RadiusImageView, 0, 0
-        )
-        radiusRes = a.getLayoutDimension(R.styleable.RadiusImageView_radius, 0)
-        radiusLtRes = a.getLayoutDimension(R.styleable.RadiusImageView_radiusLeftTop, 0)
-        radiusRtRes = a.getLayoutDimension(R.styleable.RadiusImageView_radiusRightTop, 0)
-        radiusLbRes = a.getLayoutDimension(R.styleable.RadiusImageView_radiusLeftBottom, 0)
-        radiusRbRes = a.getLayoutDimension(R.styleable.RadiusImageView_radiusRightBottom, 0)
-        a.recycle()
+    init {
+        context.obtainStyledAttributes(
+            attrs, R.styleable.RadiusImageView, 0, 0
+        ).apply {
+            radiusRes = getLayoutDimension(R.styleable.RadiusImageView_radius, 0)
+            radiusLtRes = getLayoutDimension(R.styleable.RadiusImageView_radiusLeftTop, 0)
+            radiusRtRes = getLayoutDimension(R.styleable.RadiusImageView_radiusRightTop, 0)
+            radiusLbRes = getLayoutDimension(R.styleable.RadiusImageView_radiusLeftBottom, 0)
+            radiusRbRes = getLayoutDimension(R.styleable.RadiusImageView_radiusRightBottom, 0)
+        }.recycle()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
