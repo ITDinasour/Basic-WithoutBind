@@ -36,9 +36,7 @@ import androidx.core.graphics.component4
  */
 val Float.px
     get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this,
-        Resources.getSystem().displayMetrics
+        TypedValue.COMPLEX_UNIT_DIP, this, Resources.getSystem().displayMetrics
     )
 
 fun Activity.hideNavigationBar() {
@@ -53,8 +51,7 @@ fun Activity.hideNavigationBar() {
 }
 
 inline fun <reified T : Activity> Activity.startActivity(
-    bundle: Bundle? = null,
-    options: Bundle? = null
+    bundle: Bundle? = null, options: Bundle? = null
 ) {
     val intent = Intent(this, T::class.java)
     bundle?.run { intent.putExtras(this) }
@@ -103,6 +100,8 @@ fun Drawable.toBitmap(
             if (width == intrinsicWidth && height == intrinsicHeight) {
                 return bitmap
             }
+            val width = if (width > 0) width else 1
+            val height = if (height > 0) height else 1
             return Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
     }

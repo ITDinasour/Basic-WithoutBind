@@ -24,12 +24,17 @@ import java.io.InputStream
  */
 object BasicUtil {
     private const val TAG = "TAG-BasicUtil"
+    var isDebug = BuildConfig.DEBUG
     fun logI(msg: String) {
-        Log.i(TAG, msg)
+        if (isDebug) {
+            Log.i(TAG, msg)
+        }
     }
 
     fun logE(msg: String? = null, throwable: Throwable? = null) {
-        Log.e(TAG, msg ?: "Error : ", throwable)
+        if (isDebug) {
+            Log.e(TAG, msg ?: "Error : ", throwable)
+        }
     }
 
     fun isServiceRunning(context: Context, servicePackage: String?): Boolean {
@@ -107,7 +112,6 @@ object BasicUtil {
 
         return BitmapFactory.decodeStream(inputStream)
     }
-
 
     fun drawable2Bitmap(drawable: Drawable): Bitmap = drawable.toBitmap()
 

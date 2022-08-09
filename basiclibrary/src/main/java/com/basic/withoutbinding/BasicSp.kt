@@ -30,18 +30,6 @@ object BasicSp {
     fun edit(context: Context, spName: String = context.packageName) = get(context, spName).edit()
 
     fun apply(context: Context, key: String, value: Any) {
-        BasicUtil.logI(
-            "apply : $value - " +
-                    when (value) {
-                        is Boolean -> "Boolean"
-                        is String -> "String"
-                        is Set<*> -> "Set<*>"
-                        is Int -> "Int"
-                        is Long -> "Long"
-                        is Float -> "Float"
-                        else -> "else"
-                    }
-        )
         when (value) {
             is Boolean -> edit(context).putBoolean(key, value)
             is String -> edit(context).putString(key, value)

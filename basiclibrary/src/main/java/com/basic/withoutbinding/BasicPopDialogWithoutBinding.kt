@@ -42,16 +42,16 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
 
 
     open fun show() {
-        val decorView = mActivity.window.decorView
-        systemUiVisibility = decorView.systemUiVisibility
-        showPopWindow(decorView, getShowGravity(), getShowLocationX(), getShowLocationY())
+        showPopWindow(
+            mActivity.window.decorView, getShowGravity(),
+            getShowLocationX(), getShowLocationY()
+        )
     }
 
 
     open fun show(
         locationView: View, gravity: Int = Gravity.NO_GRAVITY, offsetX: Int, offsetY: Int
     ) {
-        systemUiVisibility = 0
         locationView.post {
             val location = IntArray(2)
             locationView.getLocationOnScreen(location)
@@ -80,6 +80,7 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
     }
 
     protected open fun onShow() {
+        systemUiVisibility = mActivity.window.decorView.systemUiVisibility
         mActivity.realAction<LifecycleOwner> {
             lifecycle.removeObserver(this@BasicPopDialogWithoutBinding)
             lifecycle.addObserver(this@BasicPopDialogWithoutBinding)
@@ -127,5 +128,6 @@ abstract class BasicPopDialogWithoutBinding<A : Activity>(protected val mActivit
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @CallSuper
     protected open fun onActivityDestroy() {
+        dismiss()
     }
 }
